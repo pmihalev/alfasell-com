@@ -1,70 +1,71 @@
 ---
-// Grille tarifaire AlfaSell — modèle PER-SIÈGE (par utilisateur).
-// Source de vérité : milex-modern PG milex.pricing_plans / pricing_addons.
+// Grille tarifaire AlfaSell — DATA-DRIVEN : lue au build depuis l'API publique
+// de milex.fr (source de vérité PostgreSQL milex.pricing_plans / pricing_addons).
+// Plus de prix codés en dur : alfasell.com affiche exactement la grille live.
+// Fallback intégré si l'API est injoignable au build (le déploiement ne casse pas).
+//
+// ⚠️ Snapshot au build : après une modif de prix dans /milex/pricing, relancer le
+// déploiement (push sur main ou « Run workflow ») pour rafraîchir alfasell.com.
+//
 // Le bouton d'achat pointe vers la vraie page de paiement : milex.fr/pricing.
 const BUY = 'https://milex.fr/pricing';
+const PRICING_API = 'https://milex.fr/api/public/pricing';
 
-const plans = [
-  {
-    name: 'Essentiel',
-    target: 'TPE · Indépendants · Freelances',
-    perUser: 49,
-    minSeats: 2,
-    featured: false,
-    cta: 'Essai gratuit 14 jours',
-    features: [
-      'CRM contacts & entreprises',
-      'Devis & factures illimités',
-      'Catalogue produits',
-      'Pipeline de vente',
-      'Application mobile iOS / Android',
-      'Support email 5j/7',
-    ],
-  },
-  {
-    name: 'Business',
-    target: 'PME · Équipes commerciales',
-    perUser: 69,
-    minSeats: 4,
-    featured: true,
-    cta: 'Démarrer maintenant',
-    features: [
-      'Tout Essentiel inclus',
-      'Gestion des stocks avancée',
-      'Automatisations commerciales',
-      'Analytics avancés & rapports',
-      'IA : scoring leads & prévisions',
-      'API REST + intégrations',
-      'Support prioritaire 7j/7',
-    ],
-  },
-  {
-    name: 'Enterprise',
-    target: 'ETI · Grands comptes · Multi-sites',
-    perUser: 99,
-    minSeats: 10,
-    dedicated: 1490,
-    featured: false,
-    cta: 'Contacter les ventes',
-    features: [
-      'Tout Business inclus',
-      'Multi-sociétés & multi-devises',
-      'SSO / SAML / Active Directory',
-      'Rôles & permissions avancés',
-      'SLA 99,9 % · Backup quotidien',
-      'Account manager dédié',
-    ],
-  },
-];
+interface ApiPlan {
+  code: string; name: string; target: string;
+  price_monthly: number; price_per_user: number | null; min_seats: number;
+  dedicated_server_addon: number | null; features: string[];
+  featured: boolean; cta_label: string;
+}
+interface ApiAddon {
+  code: string; emoji: string; name: string;
+  price_monthly: number; price_per_user: number | null; description: string;
+}
+interface ApiData {
+  plans: ApiPlan[]; addons: ApiAddon[];
+  settings?: { discount_quarterly?: number; discount_annual?: number; price_suffix?: string; vat_note?: string };
+}
 
-const addons = [
-  { emoji: '🛒', name: 'e-Commerce', perUser: 12, desc: 'Boutique en ligne connectée à votre stock AlfaSell.' },
-  { emoji: '🤖', name: 'IA Avancée', perUser: 8, desc: 'Rédaction d’emails, résumés de deals, prédictions de clôture.' },
-  { emoji: '📊', name: 'Analytics Pro', perUser: 6, desc: 'Dashboards BI, connecteurs PowerBI, Tableau, Data Studio.' },
-  { emoji: '📞', name: 'Téléphonie VoIP', perUser: 10, desc: 'Click-to-call, enregistrement, transcription IA dans le CRM.' },
-];
+// ── Fallback (utilisé seulement si l'API est down au moment du build) ──────────
+const FALLBACK: ApiData = {
+  plans: [
+    { code: 'starter', name: 'Essentiel', target: 'TPE · Indépendants · Freelances', price_monthly: 98, price_per_user: 49, min_seats: 2, dedicated_server_addon: null, featured: false, cta_label: 'Essai gratuit 14 jours', features: ['CRM contacts & entreprises', 'Devis & factures illimités', 'Catalogue produits', 'Pipeline de vente', 'Application mobile iOS / Android', 'Support email 5j/7'] },
+    { code: 'growth', name: 'Business', target: 'PME · Équipes commerciales', price_monthly: 276, price_per_user: 69, min_seats: 4, dedicated_server_addon: null, featured: true, cta_label: 'Démarrer maintenant', features: ['Tout Essentiel inclus', 'Gestion des stocks avancée', 'Automatisations commerciales', 'Analytics avancés & rapports', 'IA : scoring leads & prévisions', 'API REST + intégrations', 'Support prioritaire 7j/7'] },
+    { code: 'enterprise', name: 'Enterprise', target: 'ETI · Grands comptes · Multi-sites', price_monthly: 990, price_per_user: 99, min_seats: 10, dedicated_server_addon: 1490, featured: false, cta_label: 'Contacter les ventes', features: ['Tout Business inclus', 'Multi-sociétés & multi-devises', 'SSO / SAML / Active Directory', 'Rôles & permissions avancés', 'SLA 99,9 % · Backup quotidien', 'Account manager dédié'] },
+  ],
+  addons: [
+    { code: 'ecommerce', emoji: '🛒', name: 'e-Commerce', price_monthly: 12, price_per_user: 12, description: 'Boutique en ligne connectée à votre stock AlfaSell.' },
+    { code: 'ia', emoji: '🤖', name: 'IA Avancée', price_monthly: 8, price_per_user: 8, description: 'Rédaction d’emails, résumés de deals, prédictions de clôture.' },
+    { code: 'analytics', emoji: '📊', name: 'Analytics Pro', price_monthly: 6, price_per_user: 6, description: 'Dashboards BI, connecteurs PowerBI, Tableau, Data Studio.' },
+    { code: 'voip', emoji: '📞', name: 'Téléphonie VoIP', price_monthly: 10, price_per_user: 10, description: 'Click-to-call, enregistrement, transcription IA dans le CRM.' },
+  ],
+  settings: { vat_note: 'Tarifs HT · TVA applicable selon pays.' },
+};
 
-const eur = (n: number) => `${n.toLocaleString('fr-FR')} €`;
+let data: ApiData = FALLBACK;
+try {
+  const res = await fetch(PRICING_API, { signal: AbortSignal.timeout(10_000) });
+  if (res.ok) {
+    const json = await res.json();
+    const d = (json?.data ?? json) as ApiData;
+    if (Array.isArray(d?.plans) && d.plans.length && Array.isArray(d?.addons)) data = d;
+    else console.warn('[Pricing] réponse API inattendue → fallback');
+  } else {
+    console.warn(`[Pricing] API ${res.status} → fallback`);
+  }
+} catch (e) {
+  console.warn('[Pricing] fetch API échoué → fallback :', (e as Error).message);
+}
+
+const plans = data.plans;
+const addons = data.addons;
+const dq = data.settings?.discount_quarterly ?? 0.1;
+const da = data.settings?.discount_annual ?? 0.2;
+const vatNote = data.settings?.vat_note ?? 'Tarifs HT · TVA applicable selon pays.';
+
+const eur = (n: number) => `${Math.round(n).toLocaleString('fr-FR')} €`;
+const perUserOf = (x: { price_per_user: number | null; price_monthly: number; min_seats?: number }) =>
+  x.price_per_user ?? x.price_monthly;
 ---
 
 <section id="tarifs" class="border-t border-white/10 py-24">
@@ -80,94 +81,100 @@ const eur = (n: number) => `${n.toLocaleString('fr-FR')} €`;
     <!-- Plans -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-14">
       {
-        plans.map((p) => (
-          <div
-            class:list={[
-              'relative rounded-2xl p-8 flex flex-col transition',
-              p.featured
-                ? 'ring-2 ring-brand-vivid md:scale-[1.04]'
-                : 'ring-1 ring-brand-royal/25 hover:ring-brand-royal/60',
-            ]}
-            style={
-              p.featured
-                ? 'background: linear-gradient(150deg, rgba(91,33,182,0.30), rgba(30,10,60,0.9));'
-                : 'background: rgba(255,255,255,0.03);'
-            }
-          >
-            {p.featured && (
-              <div
-                class="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-[11px] font-extrabold tracking-wide whitespace-nowrap"
-                style="background:#C9A84C;color:#1e0a3c;"
-              >
-                ⭐ PLUS POPULAIRE
-              </div>
-            )}
-            <div class="text-2xl font-extrabold mb-1">{p.name}</div>
-            <div class="text-[13px] text-white/40 mb-6">{p.target}</div>
-
-            <div class="mb-1 flex items-baseline gap-1.5">
-              <span class="text-5xl font-extrabold tracking-tight">{eur(p.perUser)}</span>
-              <span class="text-sm text-white/40 font-semibold">/utilisateur HT</span>
-            </div>
-            <div class="text-[13px] text-white/40 mb-5">
-              à partir de {p.minSeats} sièges · dès <span class="text-white/70 font-semibold">{eur(p.perUser * p.minSeats)}/mois</span>
-            </div>
-            {p.dedicated && (
-              <div class="text-[12px] text-white/35 -mt-3 mb-5">Option serveur dédié : +{eur(p.dedicated)}/mois</div>
-            )}
-
-            <div class="h-px bg-brand-royal/20 mb-5" />
-            <ul class="space-y-2.5 mb-8 flex-1">
-              {p.features.map((f) => (
-                <li class="flex items-start gap-2.5 text-[13.5px] text-white/75 leading-snug">
-                  <span class="font-bold shrink-0" style={`color:${p.featured ? '#C9A84C' : '#7C3AED'}`}>✓</span>
-                  {f}
-                </li>
-              ))}
-            </ul>
-
-            <a
-              href={BUY}
+        plans.map((p) => {
+          const minSeats = Math.max(1, p.min_seats || 1);
+          const perUser = perUserOf(p);
+          return (
+            <div
               class:list={[
-                'block text-center w-full rounded-xl px-4 py-3.5 text-[15px] font-bold transition',
-                p.featured ? 'hover:opacity-90' : 'border border-brand-royal/50 text-white/85 hover:bg-brand-royal/30',
+                'relative rounded-2xl p-8 flex flex-col transition',
+                p.featured
+                  ? 'ring-2 ring-brand-vivid md:scale-[1.04]'
+                  : 'ring-1 ring-brand-royal/25 hover:ring-brand-royal/60',
               ]}
-              style={p.featured ? 'background:#C9A84C;color:#1e0a3c;' : ''}
+              style={
+                p.featured
+                  ? 'background: linear-gradient(150deg, rgba(91,33,182,0.30), rgba(30,10,60,0.9));'
+                  : 'background: rgba(255,255,255,0.03);'
+              }
             >
-              {p.cta} →
-            </a>
-          </div>
-        ))
+              {p.featured && (
+                <div
+                  class="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-[11px] font-extrabold tracking-wide whitespace-nowrap"
+                  style="background:#C9A84C;color:#1e0a3c;"
+                >
+                  ⭐ PLUS POPULAIRE
+                </div>
+              )}
+              <div class="text-2xl font-extrabold mb-1">{p.name}</div>
+              <div class="text-[13px] text-white/40 mb-6">{p.target}</div>
+
+              <div class="mb-1 flex items-baseline gap-1.5">
+                <span class="text-5xl font-extrabold tracking-tight">{eur(perUser)}</span>
+                <span class="text-sm text-white/40 font-semibold">/utilisateur HT</span>
+              </div>
+              <div class="text-[13px] text-white/40 mb-5">
+                à partir de {minSeats} sièges · dès <span class="text-white/70 font-semibold">{eur(perUser * minSeats)}/mois</span>
+              </div>
+              {p.dedicated_server_addon ? (
+                <div class="text-[12px] text-white/35 -mt-3 mb-5">Option serveur dédié : +{eur(p.dedicated_server_addon)}/mois</div>
+              ) : null}
+
+              <div class="h-px bg-brand-royal/20 mb-5" />
+              <ul class="space-y-2.5 mb-8 flex-1">
+                {p.features.map((f) => (
+                  <li class="flex items-start gap-2.5 text-[13.5px] text-white/75 leading-snug">
+                    <span class="font-bold shrink-0" style={`color:${p.featured ? '#C9A84C' : '#7C3AED'}`}>✓</span>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+
+              <a
+                href={BUY}
+                class:list={[
+                  'block text-center w-full rounded-xl px-4 py-3.5 text-[15px] font-bold transition',
+                  p.featured ? 'hover:opacity-90' : 'border border-brand-royal/50 text-white/85 hover:bg-brand-royal/30',
+                ]}
+                style={p.featured ? 'background:#C9A84C;color:#1e0a3c;' : ''}
+              >
+                {p.cta_label || 'Démarrer'} →
+              </a>
+            </div>
+          );
+        })
       }
     </div>
 
     <p class="text-center text-xs text-white/35 mt-6">
-      Tarifs HT · remises −10 % au trimestre, −20 % à l’année · TVA applicable selon pays.
+      {vatNote} · remises −{Math.round(dq * 100)} % au trimestre, −{Math.round(da * 100)} % à l’année.
     </p>
 
-    <!-- Add-ons -->
-    <div class="mt-20">
-      <div class="text-center mb-2">
-        <div class="text-xs font-semibold uppercase tracking-[0.2em] mb-2 text-brand-gold">Modules</div>
-        <h3 class="text-3xl font-extrabold tracking-tight">Ajoutez ce qu’il vous faut</h3>
-      </div>
-      <p class="text-center text-xs text-white/35 mb-10">
-        Tarif par utilisateur, facturé sur le nombre de sièges de votre plan.
-      </p>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {
-          addons.map((a) => (
-            <div class="rounded-xl ring-1 ring-brand-royal/20 bg-white/[0.03] p-6 hover:ring-brand-royal/50 transition">
-              <div class="text-3xl mb-3">{a.emoji}</div>
-              <h4 class="font-extrabold mb-1">{a.name}</h4>
-              <div class="text-sm font-semibold mb-2.5 text-brand-gold">
-                +{eur(a.perUser)}<span class="text-white/40 font-medium">/utilisateur/mois</span>
+    <!-- Add-ons (per-siège : tarif par utilisateur, facturé × sièges du plan) -->
+    {addons.length > 0 && (
+      <div class="mt-20">
+        <div class="text-center mb-2">
+          <div class="text-xs font-semibold uppercase tracking-[0.2em] mb-2 text-brand-gold">Modules</div>
+          <h3 class="text-3xl font-extrabold tracking-tight">Ajoutez ce qu’il vous faut</h3>
+        </div>
+        <p class="text-center text-xs text-white/35 mb-10">
+          Tarif par utilisateur, facturé sur le nombre de sièges de votre plan.
+        </p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {
+            addons.map((a) => (
+              <div class="rounded-xl ring-1 ring-brand-royal/20 bg-white/[0.03] p-6 hover:ring-brand-royal/50 transition">
+                <div class="text-3xl mb-3">{a.emoji}</div>
+                <h4 class="font-extrabold mb-1">{a.name}</h4>
+                <div class="text-sm font-semibold mb-2.5 text-brand-gold">
+                  +{eur(perUserOf(a))}<span class="text-white/40 font-medium">/utilisateur/mois</span>
+                </div>
+                <p class="text-xs text-white/45 leading-relaxed">{a.description}</p>
               </div>
-              <p class="text-xs text-white/45 leading-relaxed">{a.desc}</p>
-            </div>
-          ))
-        }
+            ))
+          }
+        </div>
       </div>
-    </div>
+    )}
   </div>
 </section>
