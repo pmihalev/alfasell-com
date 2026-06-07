@@ -1,0 +1,32 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* AlfaSell marketing site — base styles. Fonts loaded via <link> in Base.astro
+   (Syne for display, Inter for body). */
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background: #0d0520;
+  color: #fff;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Subtle radial glow helper used by hero / CTA sections. */
+.glow {
+  background: radial-gradient(circle, rgba(124, 58, 237, 0.25), transparent 70%);
+}
+
+/* Anchor offset so sticky header doesn't cover section titles. */
+:target {
+  scroll-margin-top: 5rem;
+}

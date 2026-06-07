@@ -1,0 +1,35 @@
+# fly.toml — alfasell.com (marketing site)
+# Deploy:      fly deploy
+# Auto-deploy: .github/workflows/fly-deploy.yml on push to main
+# Cloudflare sits in front (proxied CNAME) as the CDN/cache.
+
+app            = "alfasell-com"
+primary_region = "cdg"   # Paris
+
+[build]
+  dockerfile = "Dockerfile"
+
+[http_service]
+  internal_port        = 8080
+  force_https          = true
+  auto_stop_machines   = "stop"   # idle → stop (free-tier friendly)
+  auto_start_machines  = true
+  min_machines_running = 0
+  processes            = ["app"]
+
+  [http_service.concurrency]
+    type       = "requests"
+    soft_limit = 200
+    hard_limit = 250
+
+[[http_service.checks]]
+  interval     = "30s"
+  timeout      = "5s"
+  grace_period = "10s"
+  method       = "GET"
+  path         = "/healthz"
+
+[[vm]]
+  size   = "shared-cpu-1x"
+  memory = "256mb"
+  cpus   = 1

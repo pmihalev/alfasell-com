@@ -1,0 +1,47 @@
+<svg width="1200" height="630" viewBox="0 0 1200 630" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#1e0a3c"/>
+      <stop offset="0.55" stop-color="#2a0f52"/>
+      <stop offset="1" stop-color="#0d0520"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.78" cy="0.22" r="0.6">
+      <stop offset="0" stop-color="#7C3AED" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#7C3AED" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="goldline" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#C9A84C" stop-opacity="0"/>
+      <stop offset="0.5" stop-color="#C9A84C"/>
+      <stop offset="1" stop-color="#C9A84C" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#glow)"/>
+
+  <!-- Icon -->
+  <g transform="translate(96, 150)">
+    <rect x="0" y="0" width="120" height="120" rx="22" fill="#5B21B6"/>
+    <polygon points="60,16 19,104 38,104 60,55" fill="white"/>
+    <polygon points="60,16 101,104 82,104 60,55" fill="white"/>
+    <rect x="35" y="71" width="50" height="12" rx="3" fill="#5B21B6"/>
+    <polygon points="60,11 50,30 70,30" fill="white"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="248" y="218" font-family="'Syne', 'Arial Black', Arial, sans-serif" font-weight="800" font-size="92" letter-spacing="-2">
+    <tspan fill="#ffffff">Alfa</tspan><tspan fill="#a78bfa">Sell</tspan>
+  </text>
+  <text x="250" y="262" font-family="Arial, sans-serif" font-weight="600" font-size="22" fill="#C9A84C" letter-spacing="6">PLATEFORME DE GESTION COMMERCIALE</text>
+
+  <rect x="96" y="330" width="320" height="3" rx="2" fill="url(#goldline)"/>
+
+  <!-- Value prop -->
+  <text x="96" y="412" font-family="'Syne', 'Arial Black', Arial, sans-serif" font-weight="800" font-size="58" fill="#ffffff" letter-spacing="-1">Toute votre gestion,</text>
+  <text x="96" y="478" font-family="'Syne', 'Arial Black', Arial, sans-serif" font-weight="800" font-size="58" fill="#ffffff" letter-spacing="-1">enfin <tspan fill="#C9A84C">simple</tspan>.</text>
+
+  <text x="96" y="552" font-family="Arial, sans-serif" font-weight="400" font-size="28" fill="#cbb9e8">CRM · Devis &amp; Factures · Stocks · IA · 14 jours d'essai gratuit</text>
+
+  <!-- Editor tag -->
+  <text x="1104" y="585" font-family="Arial, sans-serif" font-weight="500" font-size="22" fill="#8b78b5" text-anchor="end">alfasell.com · édité par Milex</text>
+</svg>

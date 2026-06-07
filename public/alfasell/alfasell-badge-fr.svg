@@ -1,0 +1,7 @@
+<svg width="138" height="50" viewBox="0 0 138 50" xmlns="http://www.w3.org/2000/svg">
+  <rect width="138" height="50" rx="7" fill="#5B21B6"/>
+  <rect x="10" y="9" width="20" height="32" rx="3" fill="#002395"/>
+  <rect x="30" y="9" width="20" height="32" fill="white"/>
+  <rect x="50" y="9" width="20" height="32" rx="3" fill="#ED2939"/>
+  <text x="104" y="31" font-family="'Arial Black', Arial, sans-serif" font-weight="800" font-size="13" fill="white" text-anchor="middle" letter-spacing="1">.FR</text>
+</svg>

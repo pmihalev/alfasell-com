@@ -1,0 +1,223 @@
+---
+import Base from '../layouts/Base.astro';
+import Pricing from '../components/Pricing.astro';
+
+const BUY = 'https://milex.fr/pricing';
+
+const features = [
+  { icon: '👥', title: 'CRM & Contacts', body: 'Clients, prospects, entreprises et historique complet. Pipeline de vente visuel, relances automatiques.' },
+  { icon: '🧾', title: 'Devis & Factures', body: 'Devis en 2 clics, factures conformes, relances de paiement, suivi des règlements. Illimité.' },
+  { icon: '📦', title: 'Stocks & Achats', body: 'Multi-dépôts, commandes fournisseurs, réceptions, inventaire. Liaison directe avec le catalogue.' },
+  { icon: '🛠️', title: 'SAV & Interventions', body: 'Tickets, garanties, planning d’interventions, suivi des réparations et pièces.' },
+  { icon: '🛒', title: 'Caisse & Point de vente', body: 'Encaissement, tickets, gestion multi-caisses synchronisée au stock en temps réel.' },
+  { icon: '📊', title: 'Pilotage & Analytics', body: 'Tableaux de bord, marges, prévisions de vente, exports comptables. Décidez sur des chiffres.' },
+];
+
+const security = [
+  { title: 'Hébergé en France', body: 'Microsoft Azure, région France Centre. Vos données restent en Europe.' },
+  { title: 'Chiffrement', body: 'TLS en transit, chiffrement au repos. Mots de passe & secrets jamais en clair.' },
+  { title: 'Conforme RGPD', body: 'Édité par Milex, société française. Hébergement et traitement UE.' },
+  { title: 'Sauvegardes', body: 'Backups quotidiens, restauration point-in-time. Aucune perte de données.' },
+  { title: 'Multi-appareils', body: 'Web, iOS et Android. Vos commerciaux travaillent partout, synchronisés.' },
+  { title: 'Support humain', body: 'Une équipe en France qui connaît votre métier. Pas de robot.' },
+];
+---
+
+<Base>
+  <!-- ── Sticky header ── -->
+  <header
+    class="sticky top-0 z-30 border-b border-white/10"
+    style="background:rgba(13,5,32,0.92);backdrop-filter:blur(12px);"
+  >
+    <div class="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2.5">
+        <img src="/alfasell/alfasell-icon-purple.svg" alt="" width="28" height="28" class="rounded-lg" />
+        <span class="font-display font-bold tracking-tight">AlfaSell</span>
+        <span class="hidden sm:block text-white/30 text-xs">· by Milex</span>
+      </a>
+      <nav class="flex items-center gap-3">
+        <a href="#fonctionnalites" class="hidden sm:block text-white/60 hover:text-white text-sm transition">Fonctionnalités</a>
+        <a href="#tarifs" class="hidden sm:block text-white/60 hover:text-white text-sm transition">Tarifs</a>
+        <a
+          href={BUY}
+          class="px-4 py-1.5 rounded-full text-sm font-semibold text-black transition hover:opacity-90"
+          style="background:#C9A84C;"
+        >
+          Essai gratuit →
+        </a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── Hero ── -->
+  <section class="relative overflow-hidden">
+    <div class="glow absolute left-1/2 -translate-x-1/2 -top-20 w-[760px] h-[760px] pointer-events-none"></div>
+    <div class="relative max-w-5xl mx-auto px-6 pt-24 pb-20 text-center">
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/10 bg-white/5 text-xs text-white/60 mb-8">
+        <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse-soft"></span>
+        Nouvelle génération · 100 % cloud · hébergé en France 🇫🇷
+      </div>
+      <h1 class="font-display text-5xl md:text-7xl font-extrabold tracking-tight mb-6 leading-[1.05]">
+        Toute votre gestion<br /><span class="text-brand-gold">commerciale</span>, enfin réunie.
+      </h1>
+      <p class="text-xl text-white/60 max-w-2xl mx-auto mb-10 leading-relaxed">
+        AlfaSell réunit CRM, devis, factures, stocks, SAV et caisse dans une seule plateforme cloud.
+        Conçue pour les PME françaises qui veulent vendre plus, sans usine à gaz.
+      </p>
+      <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <a
+          href={BUY}
+          class="px-8 py-4 rounded-2xl font-bold text-black text-lg transition hover:scale-105"
+          style="background:#C9A84C;"
+        >
+          Commencer gratuitement
+        </a>
+        <span class="text-white/40 text-sm">14 jours d’essai · sans carte · migration gratuite</span>
+      </div>
+
+      <div class="mt-20 grid grid-cols-3 gap-6 max-w-2xl mx-auto border-t border-white/10 pt-12">
+        <div class="text-center">
+          <p class="text-3xl font-extrabold mb-1">6-en-1</p>
+          <p class="text-xs text-white/40 uppercase tracking-widest">Modules intégrés</p>
+        </div>
+        <div class="text-center">
+          <p class="text-3xl font-extrabold mb-1">🇫🇷 Azure</p>
+          <p class="text-xs text-white/40 uppercase tracking-widest">Hébergé en France</p>
+        </div>
+        <div class="text-center">
+          <p class="text-3xl font-extrabold mb-1">14 j</p>
+          <p class="text-xs text-white/40 uppercase tracking-widest">Essai gratuit</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Problem ── -->
+  <section class="border-t border-white/10 py-20">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="font-display text-3xl font-extrabold text-center mb-4">Fini les outils éparpillés</h2>
+      <p class="text-white/50 text-center max-w-xl mx-auto mb-14">
+        Un tableur pour les devis, un autre logiciel pour le stock, des post-it pour le SAV. AlfaSell remplace tout ça.
+      </p>
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="rounded-2xl p-6 border border-white/10 bg-white/5">
+          <p class="text-2xl mb-3">😵‍💫</p>
+          <h3 class="font-bold mb-2">Avant</h3>
+          <p class="text-white/50 text-sm leading-relaxed">5 logiciels qui ne se parlent pas, des doubles saisies, des données perdues.</p>
+        </div>
+        <div class="rounded-2xl p-6 border border-white/10 bg-white/5">
+          <p class="text-2xl mb-3">⚡</p>
+          <h3 class="font-bold mb-2">Avec AlfaSell</h3>
+          <p class="text-white/50 text-sm leading-relaxed">Une seule base : un devis devient commande, puis facture, puis ligne de stock. Automatiquement.</p>
+        </div>
+        <div class="rounded-2xl p-6 border border-white/10 bg-white/5">
+          <p class="text-2xl mb-3">📈</p>
+          <h3 class="font-bold mb-2">Résultat</h3>
+          <p class="text-white/50 text-sm leading-relaxed">Moins de temps en saisie, plus de temps à vendre. Une vision claire de votre activité.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Features ── -->
+  <section id="fonctionnalites" class="py-20">
+    <div class="max-w-5xl mx-auto px-6">
+      <h2 class="font-display text-3xl font-extrabold text-center mb-4">Tout ce dont une équipe commerciale a besoin</h2>
+      <p class="text-white/50 text-center max-w-xl mx-auto mb-14">Six modules pensés ensemble, pas bricolés.</p>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        {
+          features.map((f) => (
+            <div class="rounded-2xl p-5 border border-white/10 bg-white/5 hover:bg-white/10 transition">
+              <div class="text-2xl mb-4">{f.icon}</div>
+              <h3 class="font-bold text-sm mb-1">{f.title}</h3>
+              <p class="text-white/40 text-xs leading-relaxed">{f.body}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Migration CRM ── -->
+  <section class="border-t border-white/10 py-20" style="background:rgba(255,255,255,0.02);">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <div class="text-4xl mb-5">🚚</div>
+      <h2 class="font-display text-3xl font-extrabold mb-4">Migration gratuite depuis tout CRM</h2>
+      <p class="text-white/55 max-w-2xl mx-auto leading-relaxed mb-8">
+        Vous venez de Salesforce, HubSpot, Sellsy, EBP, un tableur Excel ? Importez vos clients, contacts et produits
+        en quelques minutes. Notre assistant reconnaît automatiquement vos colonnes — vous validez, c’est importé.
+      </p>
+      <a href={BUY} class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-black transition hover:opacity-90" style="background:#C9A84C;">
+        Démarrer ma migration →
+      </a>
+    </div>
+  </section>
+
+  <!-- ── Cloud security ── -->
+  <section class="border-t border-white/10 py-20">
+    <div class="max-w-5xl mx-auto px-6">
+      <div class="md:grid md:grid-cols-2 md:gap-16 items-center">
+        <div>
+          <div class="text-4xl mb-6">🛡️</div>
+          <h2 class="font-display text-3xl font-extrabold mb-4">Cloud souverain, sérénité totale</h2>
+          <p class="text-white/50 leading-relaxed mb-8">
+            Vos données d’entreprise méritent mieux qu’un serveur sous le bureau. AlfaSell tourne sur Microsoft Azure,
+            région France, avec sauvegardes quotidiennes et chiffrement de bout en bout.
+          </p>
+          <a href="#tarifs" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-sm text-black transition hover:opacity-90" style="background:#C9A84C;">
+            Voir les tarifs →
+          </a>
+        </div>
+        <div class="mt-12 md:mt-0 grid grid-cols-2 gap-3">
+          {
+            security.map((s) => (
+              <div class="rounded-xl p-4 border border-white/10 bg-white/5">
+                <p class="font-semibold text-sm mb-1">{s.title}</p>
+                <p class="text-white/40 text-xs leading-relaxed">{s.body}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Pricing ── -->
+  <Pricing />
+
+  <!-- ── Final CTA ── -->
+  <section class="border-t border-white/10 py-24 text-center relative overflow-hidden">
+    <div class="glow absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[900px] h-[420px] pointer-events-none"></div>
+    <div class="relative max-w-2xl mx-auto px-6">
+      <h2 class="font-display text-4xl font-extrabold mb-4">Prêt à vendre comme jamais ?</h2>
+      <p class="text-white/55 mb-10">14 jours d’essai gratuit. Sans carte de crédit. Migration gratuite depuis tout CRM.</p>
+      <a
+        href={BUY}
+        class="inline-block px-10 py-4 rounded-2xl font-bold text-black text-lg transition hover:scale-105"
+        style="background:#C9A84C;"
+      >
+        Créer mon compte AlfaSell →
+      </a>
+      <div class="flex justify-center gap-2 mt-8 flex-wrap">
+        {['🇫🇷 .FR', '🇩🇪 .DE', '🇪🇸 .ES', '🇧🇬 .BG', '🇪🇺 .EU'].map((f) => (
+          <span class="rounded-md bg-brand-royal/40 px-2.5 py-1 text-[11px] font-bold">{f}</span>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="border-t border-white/10 py-10">
+    <div class="max-w-6xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm">
+      <div class="flex items-center gap-2.5">
+        <img src="/alfasell/alfasell-icon-purple.svg" alt="" width="24" height="24" class="rounded-md" />
+        <span class="text-white/60">AlfaSell — édité par <a href="https://milex.fr" class="underline hover:text-white">Milex Planète Informatique</a></span>
+      </div>
+      <div class="flex items-center gap-5 text-white/40">
+        <a href={BUY} class="hover:text-white transition">Tarifs</a>
+        <a href="https://milex.fr" class="hover:text-white transition">milex.fr</a>
+        <span>© {new Date().getFullYear()} · France 🇫🇷</span>
+      </div>
+    </div>
+  </footer>
+</Base>

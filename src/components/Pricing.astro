@@ -1,0 +1,173 @@
+---
+// Grille tarifaire AlfaSell — modèle PER-SIÈGE (par utilisateur).
+// Source de vérité : milex-modern PG milex.pricing_plans / pricing_addons.
+// Le bouton d'achat pointe vers la vraie page de paiement : milex.fr/pricing.
+const BUY = 'https://milex.fr/pricing';
+
+const plans = [
+  {
+    name: 'Essentiel',
+    target: 'TPE · Indépendants · Freelances',
+    perUser: 49,
+    minSeats: 2,
+    featured: false,
+    cta: 'Essai gratuit 14 jours',
+    features: [
+      'CRM contacts & entreprises',
+      'Devis & factures illimités',
+      'Catalogue produits',
+      'Pipeline de vente',
+      'Application mobile iOS / Android',
+      'Support email 5j/7',
+    ],
+  },
+  {
+    name: 'Business',
+    target: 'PME · Équipes commerciales',
+    perUser: 69,
+    minSeats: 4,
+    featured: true,
+    cta: 'Démarrer maintenant',
+    features: [
+      'Tout Essentiel inclus',
+      'Gestion des stocks avancée',
+      'Automatisations commerciales',
+      'Analytics avancés & rapports',
+      'IA : scoring leads & prévisions',
+      'API REST + intégrations',
+      'Support prioritaire 7j/7',
+    ],
+  },
+  {
+    name: 'Enterprise',
+    target: 'ETI · Grands comptes · Multi-sites',
+    perUser: 99,
+    minSeats: 10,
+    dedicated: 1490,
+    featured: false,
+    cta: 'Contacter les ventes',
+    features: [
+      'Tout Business inclus',
+      'Multi-sociétés & multi-devises',
+      'SSO / SAML / Active Directory',
+      'Rôles & permissions avancés',
+      'SLA 99,9 % · Backup quotidien',
+      'Account manager dédié',
+    ],
+  },
+];
+
+const addons = [
+  { emoji: '🛒', name: 'e-Commerce', perUser: 12, desc: 'Boutique en ligne connectée à votre stock AlfaSell.' },
+  { emoji: '🤖', name: 'IA Avancée', perUser: 8, desc: 'Rédaction d’emails, résumés de deals, prédictions de clôture.' },
+  { emoji: '📊', name: 'Analytics Pro', perUser: 6, desc: 'Dashboards BI, connecteurs PowerBI, Tableau, Data Studio.' },
+  { emoji: '📞', name: 'Téléphonie VoIP', perUser: 10, desc: 'Click-to-call, enregistrement, transcription IA dans le CRM.' },
+];
+
+const eur = (n: number) => `${n.toLocaleString('fr-FR')} €`;
+---
+
+<section id="tarifs" class="border-t border-white/10 py-24">
+  <div class="max-w-6xl mx-auto px-6">
+    <div class="text-center mb-4">
+      <div class="text-xs font-semibold uppercase tracking-[0.2em] mb-3 text-brand-gold">Tarifs</div>
+      <h2 class="font-display text-4xl font-extrabold tracking-tight">Un plan pour chaque ambition</h2>
+      <p class="text-white/50 mt-3 max-w-xl mx-auto text-lg">
+        Facturation par utilisateur. Pas de surprises, pas de frais cachés. 14 jours d’essai, sans carte.
+      </p>
+    </div>
+
+    <!-- Plans -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-5 mt-14">
+      {
+        plans.map((p) => (
+          <div
+            class:list={[
+              'relative rounded-2xl p-8 flex flex-col transition',
+              p.featured
+                ? 'ring-2 ring-brand-vivid md:scale-[1.04]'
+                : 'ring-1 ring-brand-royal/25 hover:ring-brand-royal/60',
+            ]}
+            style={
+              p.featured
+                ? 'background: linear-gradient(150deg, rgba(91,33,182,0.30), rgba(30,10,60,0.9));'
+                : 'background: rgba(255,255,255,0.03);'
+            }
+          >
+            {p.featured && (
+              <div
+                class="absolute -top-3.5 left-1/2 -translate-x-1/2 rounded-full px-4 py-1 text-[11px] font-extrabold tracking-wide whitespace-nowrap"
+                style="background:#C9A84C;color:#1e0a3c;"
+              >
+                ⭐ PLUS POPULAIRE
+              </div>
+            )}
+            <div class="text-2xl font-extrabold mb-1">{p.name}</div>
+            <div class="text-[13px] text-white/40 mb-6">{p.target}</div>
+
+            <div class="mb-1 flex items-baseline gap-1.5">
+              <span class="text-5xl font-extrabold tracking-tight">{eur(p.perUser)}</span>
+              <span class="text-sm text-white/40 font-semibold">/utilisateur HT</span>
+            </div>
+            <div class="text-[13px] text-white/40 mb-5">
+              à partir de {p.minSeats} sièges · dès <span class="text-white/70 font-semibold">{eur(p.perUser * p.minSeats)}/mois</span>
+            </div>
+            {p.dedicated && (
+              <div class="text-[12px] text-white/35 -mt-3 mb-5">Option serveur dédié : +{eur(p.dedicated)}/mois</div>
+            )}
+
+            <div class="h-px bg-brand-royal/20 mb-5" />
+            <ul class="space-y-2.5 mb-8 flex-1">
+              {p.features.map((f) => (
+                <li class="flex items-start gap-2.5 text-[13.5px] text-white/75 leading-snug">
+                  <span class="font-bold shrink-0" style={`color:${p.featured ? '#C9A84C' : '#7C3AED'}`}>✓</span>
+                  {f}
+                </li>
+              ))}
+            </ul>
+
+            <a
+              href={BUY}
+              class:list={[
+                'block text-center w-full rounded-xl px-4 py-3.5 text-[15px] font-bold transition',
+                p.featured ? 'hover:opacity-90' : 'border border-brand-royal/50 text-white/85 hover:bg-brand-royal/30',
+              ]}
+              style={p.featured ? 'background:#C9A84C;color:#1e0a3c;' : ''}
+            >
+              {p.cta} →
+            </a>
+          </div>
+        ))
+      }
+    </div>
+
+    <p class="text-center text-xs text-white/35 mt-6">
+      Tarifs HT · remises −10 % au trimestre, −20 % à l’année · TVA applicable selon pays.
+    </p>
+
+    <!-- Add-ons -->
+    <div class="mt-20">
+      <div class="text-center mb-2">
+        <div class="text-xs font-semibold uppercase tracking-[0.2em] mb-2 text-brand-gold">Modules</div>
+        <h3 class="text-3xl font-extrabold tracking-tight">Ajoutez ce qu’il vous faut</h3>
+      </div>
+      <p class="text-center text-xs text-white/35 mb-10">
+        Tarif par utilisateur, facturé sur le nombre de sièges de votre plan.
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {
+          addons.map((a) => (
+            <div class="rounded-xl ring-1 ring-brand-royal/20 bg-white/[0.03] p-6 hover:ring-brand-royal/50 transition">
+              <div class="text-3xl mb-3">{a.emoji}</div>
+              <h4 class="font-extrabold mb-1">{a.name}</h4>
+              <div class="text-sm font-semibold mb-2.5 text-brand-gold">
+                +{eur(a.perUser)}<span class="text-white/40 font-medium">/utilisateur/mois</span>
+              </div>
+              <p class="text-xs text-white/45 leading-relaxed">{a.desc}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,12 @@
+<svg width="600" height="80" viewBox="0 0 600 80" xmlns="http://www.w3.org/2000/svg">
+  <rect width="600" height="80" rx="12" fill="#1e0a3c"/>
+  <g transform="translate(20, 18)">
+    <rect x="0" y="0" width="44" height="44" rx="8" fill="#5B21B6"/>
+    <polygon points="22,6 8,38 15,38 22,22" fill="white"/>
+    <polygon points="22,6 36,38 29,38 22,22" fill="white"/>
+    <rect x="13" y="27" width="18" height="5" rx="1" fill="#5B21B6"/>
+  </g>
+  <text x="78" y="34" font-family="'Arial Black', Arial, sans-serif" font-weight="800" font-size="26" fill="white" letter-spacing="-0.5">ALFA</text>
+  <text x="78" y="58" font-family="'Arial Black', Arial, sans-serif" font-weight="800" font-size="26" fill="#7C3AED" letter-spacing="-0.5">SELL</text>
+  <text x="78" y="73" font-family="Arial, sans-serif" font-weight="400" font-size="11" fill="#a78bca" letter-spacing="2">SALES MANAGEMENT PLATFORM</text>
+</svg>
